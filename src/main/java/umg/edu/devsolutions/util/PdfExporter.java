@@ -8,7 +8,6 @@ import umg.edu.devsolutions.entity.InventoryReport;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,20 +20,24 @@ public class PdfExporter {
         PdfWriter.getInstance(document, out);
         document.open();
 
-        // Add title
-        Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-        font.setSize(18);
-        Paragraph title = new Paragraph("Inventory Report", font);
-        title.setAlignment(Element.ALIGN_CENTER);
-        document.add(title);
+        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+        titleFont.setSize(18);
+        Paragraph mainTitle = new Paragraph("DevSolutions", titleFont);
+        mainTitle.setAlignment(Element.ALIGN_CENTER);
+        mainTitle.setSpacingAfter(5); // Reduce space after the title
+        document.add(mainTitle);
+
+        Font subtitleFont = FontFactory.getFont(FontFactory.HELVETICA);
+        subtitleFont.setSize(14);
+        Paragraph subtitle = new Paragraph("Reporte de Inventario", subtitleFont);
+        subtitle.setAlignment(Element.ALIGN_CENTER);
+        document.add(subtitle);
         document.add(Chunk.NEWLINE);
 
-        // Create table
         PdfPTable table = new PdfPTable(5);
         table.setWidthPercentage(100);
         table.setWidths(new int[]{1, 3, 1, 2, 2});
 
-        // Add table headers
         Stream.of("SKU", "Nombre", "Cantidad", "Costo Unitario", "Precio de Venta")
                 .forEach(headerTitle -> {
                     PdfPCell header = new PdfPCell();
@@ -43,7 +46,6 @@ public class PdfExporter {
                     table.addCell(header);
                 });
 
-        // Add data rows
         for (InventoryReport report : inventoryReports) {
             table.addCell(report.getSku());
             table.addCell(report.getNombre());

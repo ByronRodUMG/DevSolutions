@@ -30,7 +30,7 @@ public class ItemController {
         model.addAttribute("categories", itemService.getCategories());
         model.addAttribute("productTypes", itemService.getProductTypes());
         model.addAttribute("unitMeasures", itemService.getUnitMeasures());
-        return "page2"; // Devuelve el nombre de la vista
+        return "page2";
     }
 
     @PostMapping("/items")

@@ -1,4 +1,3 @@
-// src/main/java/umg/edu/devsolutions/entity/InventoryReport.java
 package umg.edu.devsolutions.entity;
 
 import java.math.BigDecimal;
@@ -18,7 +17,6 @@ public class InventoryReport {
         this.precioVenta = precioVenta;
     }
 
-    // Getters and setters
     public String getSku() {
         return sku;
     }
