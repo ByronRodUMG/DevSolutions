@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Menu</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #2c3e50;
+            margin: 0;
+        }
+        .menu-container {
+            width: 600px;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .logo-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .logo-placeholder {
+            width: 50px;
+            height: 50px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        .menu-container h1 {
+            font-size: 28px;
+            color: #333;
+            margin: 0;
+        }
+        .menu-container h2 {
+            font-size: 22px;
+            color: #666;
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+        .menu-container p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+        .menu-container .section-title {
+            margin: 20px 0 10px;
+            font-size: 18px;
+            color: #555;
+        }
+        .menu-container .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+        .menu-container button {
+            width: 48%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .menu-container .navigation-button {
+            background-color: #1abc9c;
+            color: white;
+        }
+        .menu-container .navigation-button:hover {
+            background-color: #16a085;
+        }
+        .menu-container .export-button {
+            background-color: #e67e22;
+            color: white;
+        }
+        .menu-container .export-button:hover {
+            background-color: #d35400;
+        }
+    </style>
+</head>
+<body>
+<div class="menu-container">
+    <div class="logo-title-container">
+        <div class="logo-placeholder"></div> <!-- Placeholder for the logo -->
+        <div>
+            <h1>DevSolutions</h1>
+            <h2>Gestión de Inventario</h2>
+        </div>
+    </div>
+    <p>Bienvenido al menú principal. Usa los botones de navegación para acceder a
+        las diferentes páginas. Puedes exportar la información de inventario en formato XLSX o PDF.</p>
+
+    <div class="section-title">Navegación</div>
+    <div class="button-group">
+        <button class="navigation-button" onclick="location.href='/page2'">Ingreso de Productos</button>
+        <button class="navigation-button" onclick="location.href='/page3'">Modificar Inventario</button>
+    </div>
+
+    <div class="section-title">Exportar Datos</div>
+    <div class="button-group">
+        <button class="export-button" onclick="location.href='/export/xlsx'">Exportar a XLSX</button>
+        <button class="export-button" onclick="location.href='/export/pdf'">Exportar a PDF</button>
+    </div>
+</div>
+</body>
+</html>

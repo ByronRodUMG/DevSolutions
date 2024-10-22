@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrar Stock</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            background-color: #2c3e50;
+            margin: 0;
+            padding: 20px;
+        }
+        .content-container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .list-container {
+            margin-bottom: 20px;
+        }
+        .bordered-list {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .side-by-side {
+            display: flex;
+            justify-content: space-between;
+        }
+        .side-by-side .list {
+            width: 48%;
+        }
+        .form-container {
+            margin-top: 20px;
+        }
+        .form-container label {
+            display: block;
+            margin: 15px 0 5px;
+            font-size: 16px;
+            color: #555;
+            text-align: left;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="number"],
+        .form-container select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #1abc9c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .form-container button:hover {
+            background-color: #16a085;
+        }
+        .return-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .return-button a {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #e74c3c; /* Reddish color */
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        .return-button a:hover {
+            background-color: #c0392b; /* Darker red for hover effect */
+        }
+    </style>
+</head>
+<body>
+<div class="content-container">
+    <h1>Modificar Inventario</h1>
+    <!-- List of Productos -->
+    <div class="list-container bordered-list">
+        <div class="section-title">Lista de Productos</div>
+        <ul>
+            <li th:each="producto : ${productos}">
+                <span th:text="${producto['Prod_SKU']} + ' - ' + ${producto['Prod_Nombre']}"></span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Side by Side Lists of Bodegas and Estados -->
+    <div class="side-by-side">
+        <div class="list bordered-list">
+            <div class="section-title">Bodegas</div>
+            <ul>
+                <li th:each="bodega : ${bodegas}">
+                    <span th:text="${bodega['Bodega_Id']} + ' - ' + ${bodega['Bodega_Nombre']}"></span>
+                </li>
+            </ul>
+        </div>
+        <div class="list bordered-list">
+            <div class="section-title">Códigos para estado</div>
+            <ul>
+                <li th:each="estado : ${estadosProducto}">
+                    <span th:text="${estado['EstadoProd_Id']} + ' - ' + ${estado['EstadoProd_Nombre']}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Form to Insert into Tb_Stock -->
+    <div class="form-container">
+        <div class="section-title">Añadir Stock</div>
+        <form action="#" th:action="@{/api/stock}" th:object="${stock}" method="post">
+            <div th:if="${errors != null}">
+                <ul>
+                    <li th:each="error : ${errors}">
+                        <span th:text="${error}"></span>
+                    </li>
+                </ul>
+            </div>
+            <div th:if="${param.success}">
+                <p style="color: green";>Stock actualizado!</p>
+            </div>
+            <div th:if="${param.error}">
+                <p style="color: red;">Se han encontrado errores. Por favor, reingresa los datos.</p>
+            </div>
+            <label for="sku">Producto SKU:</label>
+            <input type="text" id="sku" th:field="*{item.sku}" placeholder="Ejemplo: HW12345" required>
+
+            <label for="bodega">Bodega ID:</label>
+            <input type="number" id="bodega" th:field="*{bodega.id}" placeholder="Ejemplo: 1" min="1" required>
+
+            <label for="estado">Estado de Producto ID:</label>
+            <input type="number" id="estado" th:field="*{estadoProducto.estadoProdId}" placeholder="Ejemplo: 1" min="1" required>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" th:field="*{stockCantidad}" placeholder="Ejemplo: 100" min="1" required>
+
+            <label for="precioVenta">Precio de Venta:</label>
+            <input type="number" id="precioVenta" th:field="*{stockPrecioVenta}" step="0.01" placeholder="Ejemplo: 10.99" required>
+
+            <button type="submit">Añadir Stock</button>
+
+            <div class="return-button">
+                <a th:href="@{/page1}">Volver al inicio</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

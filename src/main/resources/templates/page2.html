@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir Item</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            background-color: #2c3e50;
+            margin: 0;
+            padding: 20px;
+        }
+        .content-container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            max-width: 1200px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .form-container {
+            width: 50%;
+            padding: 40px;
+            border-right: 1px solid #ddd;
+        }
+        .instructions-container {
+            width: 50%;
+            padding: 40px;
+        }
+        .form-container h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            display: block;
+            margin: 15px 0 5px;
+            font-size: 16px;
+            color: #555;
+            text-align: left;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="number"],
+        .form-container textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .form-container textarea {
+            height: 80px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #1abc9c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .form-container button:hover {
+            background-color: #16a085;
+        }
+        .instructions-container h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .instructions-container p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+        .input-group {
+            display: flex;
+            align-items: stretch;
+            width: calc(100% - 20px);
+            margin: 5px 0;
+        }
+        .input-group .base-url {
+            background-color: #f5f5f5;
+            color: #666;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        .input-group input {
+            flex: 1;
+            border-radius: 0 4px 4px 0 !important;
+            margin: 0 !important;
+        }
+        .return-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .return-button a {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #e74c3c; /* Reddish color */
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        .return-button a:hover {
+            background-color: #c0392b; /* Darker red for hover effect */
+        }
+    </style>
+</head>
+<body>
+<div class="content-container">
+    <div class="form-container">
+        <h1>Añadir Item</h1>
+        <form action="#" th:action="@{/api/items}" th:object="${item}" method="post">
+            <div th:if="${errors != null}">
+                <ul>
+                    <li th:each="error : ${errors}">
+                        <span th:text="${error}"></span>
+                    </li>
+                </ul>
+            </div>
+            <div th:if="${param.success}">
+                <p style="color: green;">Item agregado exitosamente!</p>
+            </div>
+            <div th:if="${param.error}">
+                <p style="color: red;">Se han encontrado errores. Por favor, reingresa los datos.</p>
+            </div>
+            <label for="sku">SKU:</label>
+            <input type="text" id="sku" th:field="*{sku}" placeholder="Ejemplo: HW12345" required><br>
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre del producto" required><br>
+
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" th:field="*{descripcion}" placeholder="Descripción detallada del producto"></textarea><br>
+
+            <label for="categoria">Categoría:</label>
+            <input type="number" id="categoria" th:field="*{categoria.catId}" placeholder="Número de la categoría" min="1" required><br>
+
+            <label for="tipoProducto">Tipo de Producto:</label>
+            <input type="number" id="tipoProducto" th:field="*{tipoProducto.tipoProdId}" placeholder="Número del tipo de producto" min="1" required><br>
+
+            <label for="unidadMedida">Unidad de Medida:</label>
+            <input type="number" id="unidadMedida" th:field="*{unidadMedida.uniMedId}" placeholder="Número de la unidad de medida" min="1" required><br>
+
+            <label for="costoUnitario">Costo Unitario:</label>
+            <input type="number" id="costoUnitario" th:field="*{costoUnitario}" step="0.01" placeholder="Ejemplo: 10.99" required><br>
+
+            <label for="descuento">Descuento:</label>
+            <input type="number" id="descuento" th:field="*{descuento}" placeholder="Porcentaje de descuento (opcional)"><br>
+
+            <label for="imagen">Imagen:</label>
+            <div class="input-group">
+                <span class="base-url">https://devsolutions.com.gt/media/</span>
+                <input type="text"
+                       id="imagen"
+                       value=""
+                       placeholder="nombre-imagen.jpg"
+                       oninput="prependBaseUrl(this)"
+                       required>
+                <input type="hidden" id="hidden-imagen" th:field="*{imagen}">
+            </div>
+
+            <button type="submit">Añadir Item</button>
+
+            <div class="return-button">
+                <a th:href="@{/page1}">Volver al inicio</a>
+            </div>
+        </form>
+    </div>
+    <div class="instructions-container">
+        <h2>Instrucciones</h2>
+        <p>Por favor, rellena el formulario para añadir un nuevo ítem al inventario.
+            Asegúrate de proporcionar todos los detalles necesarios, incluyendo el SKU,
+            nombre, descripción, y otros campos relevantes. </p>
+        <p>Utiliza los números proporcionados para seleccionar la categoría, tipo de producto,
+            y unidad de medida. Si se necesitan nuevas categorías o unidades de medida,
+            consulta con tu asistente técnico. </p>
+        <h3>Categorías Disponibles:</h3>
+        <ul>
+            <li th:each="category : ${categories}">
+                <span th:text="${category['Cat_Id']} + ' - ' + ${category['Cat_Nombre']}"></span>
+            </li>
+        </ul>
+        <h3>Tipos de Producto Disponibles:</h3>
+        <ul>
+            <li th:each="productType : ${productTypes}">
+                <span th:text="${productType['TipoProd_Id']} + ' - ' + ${productType['TipoProd_Nombre']}"></span>
+            </li>
+        </ul>
+        <h3>Unidades de Medida Disponibles:</h3>
+        <ul>
+            <li th:each="unitMeasure : ${unitMeasures}">
+                <span th:text="${unitMeasure['UniMed_Id']} + ' - ' + ${unitMeasure['UniMed_Nombre']}"></span>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+    const baseUrl = 'https://devsolutions.com.gt/media/';
+
+    // Set initial empty state
+    window.onload = function() {
+        const imageInput = document.getElementById('imagen');
+        if (imageInput.value === baseUrl) {  // If it's just the base URL
+            imageInput.value = '';  // Clear it
+        } else if (imageInput.value.startsWith(baseUrl)) {  // If it has a file
+            imageInput.value = imageInput.value.replace(baseUrl, '');  // Just show the filename
+        }
+    }
+
+    function prependBaseUrl(input) {
+        const currentValue = input.value;
+
+        // If the input is empty or just contains the base URL, don't do anything
+        if (currentValue === '' || currentValue === baseUrl) {
+            return;
+        }
+
+        // Remove the base URL if it's there
+        const fileName = currentValue.replace(baseUrl, '');
+
+        // Update the hidden form value with the complete URL
+        const hiddenInput = document.getElementById('hidden-imagen');
+        hiddenInput.value = baseUrl + fileName;
+
+        // Keep only the filename in the visible input
+        input.value = fileName;
+    }
+</script>
+</body>
+</html>
