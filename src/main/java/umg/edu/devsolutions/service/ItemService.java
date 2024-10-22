@@ -49,37 +49,4 @@ public class ItemService {
         String sql = "SELECT EstadoProd_Id, EstadoProd_Nombre FROM Catalogo.Tb_EstadosProducto";
         return jdbcTemplate.queryForList(sql);
     }
-
-    public Item findItemById(String id) {
-        String sql = "SELECT * FROM Catalogo.Tb_Productos WHERE Prod_SKU = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
-            Item item = new Item();
-            item.setSku(rs.getString("Prod_SKU"));
-            item.setNombre(rs.getString("Prod_Nombre"));
-            // Set other fields as needed
-            return item;
-        });
-    }
-
-    public Bodega findBodegaById(String id) {
-        String sql = "SELECT * FROM Ubicacion.Tb_Bodegas WHERE Bodega_Id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
-            Bodega bodega = new Bodega();
-            bodega.setId(rs.getInt("Bodega_Id"));
-            bodega.setNombre(rs.getString("Bodega_Nombre"));
-            // Set other fields as needed
-            return bodega;
-        });
-    }
-
-    public EstadoProducto findEstadoProductoById(String id) {
-        String sql = "SELECT * FROM Inventario.Tb_EstadoProducto WHERE EstadoProd_Id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
-            EstadoProducto estadoProducto = new EstadoProducto();
-            estadoProducto.setEstadoProdId(rs.getInt("EstadoProd_Id"));
-            estadoProducto.setNombre(rs.getString("EstadoProd_Nombre"));
-            // Set other fields as needed
-            return estadoProducto;
-        });
-    }
 }

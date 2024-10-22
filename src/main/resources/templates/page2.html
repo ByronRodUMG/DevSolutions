@@ -128,7 +128,7 @@
     <div class="form-container">
         <h1>Añadir Item</h1>
         <form action="#" th:action="@{/api/items}" th:object="${item}" method="post">
-            <div th:if="${errors != null}">
+            <div th:if="${errors != null}"> <!-- Probablemente inútil después de los cambios, pero se queda por si acaso -->
                 <ul>
                     <li th:each="error : ${errors}">
                         <span th:text="${error}"></span>

@@ -50,8 +50,8 @@ public class PdfExporter {
             table.addCell(report.getSku());
             table.addCell(report.getNombre());
             table.addCell(String.valueOf(report.getCantidad()));
-            table.addCell(String.valueOf(report.getCostoUnitario()));
-            table.addCell(String.valueOf(report.getPrecioVenta()));
+            table.addCell("Q" + report.getCostoUnitario());
+            table.addCell("Q" + report.getPrecioVenta());
         }
 
         document.add(table);
